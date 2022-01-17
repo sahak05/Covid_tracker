@@ -3,11 +3,23 @@ import {MenuItem, FormControl, Select, Card, CardContent} from '@material-ui/cor
 import './App.css';
 import InfoBox from './InfoBox'
 import Map from './Map'
+import Table from './Table'
+import { sortData } from './util';
+import LineGraph from './LineGraph';
+
 
 function App() {
-
+//useState
 const [countries, setCountries] = useState([]);
 const [country, setCountry] = useState("worlwide")
+const [countryInfo, setCountryInfo] = useState({})
+const [tableData, setTableData] = useState([])
+
+useEffect(()=>{
+  fetch('https://disease.sh/v3/covid-19/all')
+  .then((response) => response.json())
+  .then((data)=>{setCountryInfo(data)})
+},[]) 
 
 // https://disease.sh/v3/covid-19/countries
 
@@ -25,6 +37,7 @@ useEffect(() => {
         }
       ))
 
+      setTableData(sortData(data))
       setCountries(countries)
     })
   }
@@ -32,9 +45,24 @@ useEffect(() => {
   getCountriesData()
 }, [])
 
+
+
+
   const onCountryChange = async (event)=>{
-    setCountry(event.target.value)
+ 
+    const url = event.target.value === "worlwide" ? "https://disease.sh/v3/covid-19/all" 
+    : `https://disease.sh/v3/covid-19/countries/${event.target.value}`
+    // https://disease.sh/v3/covid-19/all
+    //https://disease.sh/v3/covid-19/countries/{COUNTRY_CODE}
+
+    await fetch(url).then((response) => response.json())
+    .then(data =>{
+      setCountry(event.target.value)
+      setCountryInfo(data) // set the country info with the data that we return
+    })
   }
+
+  // console.log(countryInfo) was hepful to see the data
   return (
     <div className="App">
 
@@ -63,9 +91,9 @@ useEffect(() => {
         {/* Infoboxs*/}
         {/* Infoboxs*/}
         <div className='app__stats'>
-          <InfoBox title='Corona Cases'  cases={1234} total={53000} />
-          <InfoBox title='Recovered'  cases={1234} total={4000} />
-          <InfoBox title='Deaths'  cases={1234} total={4000000} />
+          <InfoBox title='Corona Cases'  cases={countryInfo.todayCases} total={countryInfo.cases} />
+          <InfoBox title='Recovered'  cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
+          <InfoBox title='Deaths'  cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
         {/*Map*/}
         <Map />
@@ -73,12 +101,17 @@ useEffect(() => {
       </div>
       
       <Card className='app__right'>
-        {/* Table*/}
-        {/* Graph*/}
+        
+        
         <CardContent>
            <h3>Live cases by Country</h3>
-           <h3>Worldwide new cases</h3>   
+           {/* Table*/}
+           <Table countries={tableData}/>
+           <h3>Worldwide new cases</h3>  
+           {/* Graph*/}
+           <LineGraph/> 
         </CardContent>
+        
       </Card>
     
     </div>
