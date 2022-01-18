@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import{Line} from 'react-chartjs-2'
+import 'chartjs-adapter-date-fns';
 import numeral from "numeral"
 
 
@@ -37,7 +38,6 @@ const options = {
             display: false,
           },
           ticks: {
-            // Include a dollar sign in the ticks
             callback: function (value, index, values) {
               return numeral(value).format("0a");
             },
