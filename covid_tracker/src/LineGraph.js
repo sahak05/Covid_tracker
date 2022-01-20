@@ -1,54 +1,39 @@
 import React, {useState, useEffect} from 'react'
-import{Line} from 'react-chartjs-2'
-import 'chartjs-adapter-date-fns';
+import{ Bar } from 'react-chartjs-2'
+//import 'chartjs-adapter-date-fns';
 import numeral from "numeral"
 
 
-const options = {
-    legend: {
-      display: false,
-    },
-    elements: {
-      point: {
-        radius: 0,
-      },
-    },
-    maintainAspectRatio: false,
-    tooltips: {
-      mode: "index",
-      intersect: false,
-      callbacks: {
-        label: function (tooltipItem, data) {
-          return numeral(tooltipItem.value).format("+0,0");
+const options ={
+  legend:{
+    display: false
+  },
+  maintainAspectRatio:false,
+  scales: {
+    xAxes: [
+      {
+        type: "time",
+        time: {
+          format: "MM/DD/YY",
+          tooltipFormat: "ll",
         },
       },
-    },
-    scales: {
-      xAxes: 
-        {
-          type: "time",
-          time: {
-            format: "MM/DD/YY",
-            tooltipFormat: "ll",
+    ],
+    yAxes: [
+      {
+        gridLines: {
+          display: false,
+        },
+        ticks: {
+          // Include a dollar sign in the ticks
+          callback: function (value, index, values) {
+            return numeral(value).format("0a");
           },
         },
-      yAxes: 
-        {
-          gridLines: {
-            display: false,
-          },
-          ticks: {
-            callback: function (value, index, values) {
-              return numeral(value).format("0a");
-            },
-          },
-        },
-    },
-};
-
-
-
-
+      },
+    ],
+  },
+}
 
 const LineGraph = ({casesType="cases"}) => {
 
@@ -91,24 +76,44 @@ const LineGraph = ({casesType="cases"}) => {
         fetchData();
     }, [casesType])
 
+    const axesX = (data)=>{  //faire apparaitre la date 
+      const retour = [];
+      for(let i=0; i<data.length; i++){
+        //console.log(d)
+        retour.push(data[i].x)
+      }
+      return retour 
+    }
 
+    const axesY = (data)=>{  //faire apparaitre la date 
+      const retour = [];
+      for(let i=0; i<data.length; i++){
+        //console.log(d)
+        retour.push(data[i].y)
+      }
+      return retour 
+    }
 
 
     return (
         <div>
           {data?.length > 0 && (
-            <Line
+            <Bar
               data={{
-                datasets: [
-                  {
-                    backgroundColor: "rgba(204, 16, 52, 0.5)",
-                    borderColor: "#CC1034",
-                    data: data,
-                  },
-                ],
+                labels: axesX(data),
+                datasets:[{
+                  data:data,
+                  //label:'Some visible data',
+                  backgroundColor:'red',
+                  borderColor:'#CC1034',
+                  borderWidth:1
+            
+                }]
               }}
               options={options}
             />
+          
+        
           )}
         </div>
       );
