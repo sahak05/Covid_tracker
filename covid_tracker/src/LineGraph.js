@@ -85,14 +85,6 @@ const LineGraph = ({casesType="cases"}) => {
       return retour 
     }
 
-    const axesY = (data)=>{  //faire apparaitre la date 
-      const retour = [];
-      for(let i=0; i<data.length; i++){
-        //console.log(d)
-        retour.push(data[i].y)
-      }
-      return retour 
-    }
 
 
     return (
