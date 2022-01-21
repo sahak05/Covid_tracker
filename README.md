@@ -1,4 +1,4 @@
-# Covid_tracker  
+# Covid_tracker https://covid19-byme-foryou.netlify.app/  
 
 ### COVID-19 Tracker/Stats Application using React with the addition of Charts.js, Material UI.  
 
@@ -9,3 +9,19 @@ Corona Virus is, unfortunately, spreading through the entire world. What can we,
 ### 1. Using draw.io to make the structure
 ![image](https://user-images.githubusercontent.com/61946862/149634161-e5670129-86cb-4f79-9f4f-a59ff6c32225.png)
 =======
+  
+    
+      
+        
+          
+           
+             
+               
+                
+                 
+                   
+                     
+                      
+                      
+  #### Here 
+  ![image](https://user-images.githubusercontent.com/61946862/150462608-43fbee28-d1ef-4132-8b69-2ccc4382b9df.png)
