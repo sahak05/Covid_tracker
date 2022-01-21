@@ -16,7 +16,7 @@ const casesTypeColors = {
       hex: "#7dd71d",
       rgb: "rgb(125, 215, 29)",
       half_op: "rgba(125, 215, 29, 0.5)",
-      multiplier: 1200,
+      multiplier: 250,
     },
     deaths: {
       hex: "#fb4443",
@@ -46,7 +46,7 @@ export const sortData= (data)=>{
 
 
 //Draw circles in the map
-export const showDataonMap =(data, casesType='cases')=>(
+export const showDataonMap =(data, casesType='cases')=>
     data.map(country=>(
         
         <Circle
@@ -54,8 +54,7 @@ export const showDataonMap =(data, casesType='cases')=>(
         color={casesTypeColors[casesType].hex}
         fillColor={casesTypeColors[casesType].hex}
         fillOpacity={0.4}
-        radius={
-        Math.sqrt(country[casesType]) * casesTypeColors[casesType].multiplier}
+        radius={Math.sqrt(country[casesType]) * casesTypeColors[casesType].multiplier}
         >
             <Popup>
                 <div className= 'info-container'>
@@ -70,7 +69,7 @@ export const showDataonMap =(data, casesType='cases')=>(
             </Popup>
         </Circle>
     ))
-)
+
 
 export const prettyPrintStat = (stat) => //for the format
   stat ? `+${numeral(stat).format("0.0a")}` : "+0";

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import{ Bar } from 'react-chartjs-2'
-//import 'chartjs-adapter-date-fns';
 import numeral from "numeral"
 
 
@@ -35,7 +34,7 @@ const options ={
   },
 }
 
-const LineGraph = ({casesType="cases"}) => {
+const LineGraph = ({casesType="cases", ...props}) => {
 
     const [data, setData] = useState({})
 
@@ -66,6 +65,7 @@ const LineGraph = ({casesType="cases"}) => {
               return response.json();
             })
             .then((data) => {
+              console.log(data)
               let chartData = buildChartData(data, casesType);
               setData(chartData);
               console.log(chartData);
@@ -88,7 +88,7 @@ const LineGraph = ({casesType="cases"}) => {
 
 
     return (
-        <div>
+        <div className={props.className}>
           {data?.length > 0 && (
             <Bar
               data={{

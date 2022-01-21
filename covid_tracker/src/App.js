@@ -18,6 +18,7 @@ const [tableData, setTableData] = useState([])
 const [mapcenter, setMapcenter] = useState({ lat: 34.80746, lng: -40.4796 })
 const [mapzoom, setMapzoom] = useState(3)
 const [mapCountries, setMapCountries] = useState([])
+const [casesType, setCasesType] = useState("recovered");
 
 useEffect(()=>{
   fetch('https://disease.sh/v3/covid-19/all')
@@ -99,13 +100,29 @@ useEffect(() => {
         {/* Infoboxs*/}
         {/* Infoboxs*/}
         <div className='app__stats'>
-          <InfoBox title='Corona Cases'  cases={prettyPrintStat(countryInfo.todayCases)} total={prettyPrintStat(countryInfo.cases)} />
-          <InfoBox title='Recovered'  cases={prettyPrintStat(countryInfo.todayRecovered)} total={prettyPrintStat(countryInfo.recovered)} />
-          <InfoBox title='Deaths'  cases={prettyPrintStat(countryInfo.todayDeaths)} total={prettyPrintStat(countryInfo.deaths)} />
+          <InfoBox 
+          isRed
+          active={casesType==='cases'}
+          title='Corona Cases'  cases={prettyPrintStat(countryInfo.todayCases)}
+          total={prettyPrintStat(countryInfo.cases)} 
+          onClick={(e) => setCasesType("cases")}/>
+
+          <InfoBox 
+          active={casesType==='recovered'}
+          title='Recovered'  cases={prettyPrintStat(countryInfo.todayRecovered)}
+          total={prettyPrintStat(countryInfo.recovered)}
+          onClick={(e) => setCasesType("recovered")} />
+          <InfoBox 
+          isRed
+          active={casesType==='deaths'}
+          title='Deaths'  cases={prettyPrintStat(countryInfo.todayDeaths)} 
+          total={prettyPrintStat(countryInfo.deaths)}
+          onClick={(e) => setCasesType('deaths')} />
         </div>
         {/*Map*/}
         <Map 
         countries={mapCountries}
+        casesType={casesType}
         center={mapcenter}
         zoom={mapzoom}/>
 
@@ -118,9 +135,9 @@ useEffect(() => {
            <h3>Live cases by Country</h3>
            {/* Table*/}
            <Table countries={tableData}/>
-           <h3>Worldwide new cases</h3>  
+           <h3 className='app__graphT'>Worldwide new {casesType}</h3>  
            {/* Graph*/}
-           <LineGraph/> 
+           <LineGraph className="app__graph" casesType={casesType}/> 
         </CardContent>
         
       </Card>
